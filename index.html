@@ -1,40 +1,1042 @@
-<!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>العوني ستور</title><style>
-*{box-sizing:border-box}body{margin:0;background:#f5f5f5;color:#222;font-family:Tahoma,Arial,sans-serif}.nav{background:#181818;color:#fff;padding:11px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20}.logo{width:48px;height:48px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#111,#c49535);font-size:27px;font-weight:900}.brand{font-size:22px;font-weight:900}.sp{flex:1}.btn{border:0;border-radius:10px;padding:10px 15px}.gold{background:#b8892e;color:#fff}.dark{background:#222;color:#fff}.wrap{max-width:1200px;margin:auto;padding:18px 15px 90px}.hero{border-radius:18px;min-height:190px;padding:38px 20px;color:#ffe7a2;text-align:center;background:radial-gradient(circle at 50% 10%,#9d782e,#24211b 55%,#111)}.hero h1{font-size:36px;margin:10px}.search{width:100%;border:0;border-radius:35px;background:#e8e8e8;padding:16px 20px;margin:14px 0;outline:0}.cats{display:flex;gap:8px;overflow:auto;padding-bottom:15px}.cat{border:1px solid #ddd;background:#fff;border-radius:25px;padding:9px 17px;white-space:nowrap}.cat.on{background:#b8892e;color:#fff}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 3px 12px #0001}.pic{height:145px;display:grid;place-items:center;font-size:62px;background:linear-gradient(135deg,#171717,#9b7428)}.info{padding:14px}.price{font-weight:bold;color:#9a6b13}.full{width:100%}.modalbg{display:none;position:fixed;inset:0;background:#0008;z-index:40}.modal{background:#fff;border-radius:16px;padding:20px;width:min(700px,94vw);max-height:90vh;overflow:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.close{float:left;border:0;border-radius:50%;width:32px;height:32px}.field,select{width:100%;padding:11px;border:1px solid #ddd;border-radius:9px;margin:5px 0 10px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #eee;padding:11px 0}.bottom{position:fixed;bottom:0;left:0;right:0;height:62px;background:#a47a2c;color:#fff;display:flex;justify-content:center;gap:38px;align-items:center;z-index:25}.bottom button{background:none;border:0;color:#fff;font-size:17px}.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat div{background:#f3ead6;padding:15px;border-radius:10px}.notice{padding:10px;background:#fff3cd;border-radius:9px;margin:8px 0}.hide{display:none!important}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.stat{grid-template-columns:repeat(2,1fr)}.brand{font-size:18px}.hero h1{font-size:28px}}@media(max-width:450px){.grid{gap:9px}.pic{height:110px;font-size:50px}.bottom{gap:18px}.bottom button{font-size:14px}}
-</style></head><body>
-<header class="nav"><div class="logo">K</div><div class="brand">العوني ستور</div><div class="sp"></div><span id="who"></span><button class="btn gold" onclick="authModal()" id="authBtn">دخول</button><button class="btn dark" onclick="cartModal()">🛒 <b id="cc">0</b></button></header>
-<main class="wrap"><section class="hero"><h1>متجر العوني الرقمي</h1><p>بطاقات • ألعاب • اشتراكات • خدمات رقمية</p></section><input id="q" class="search" placeholder="ابحث عن منتج..."><div id="cats" class="cats"></div><section id="products" class="grid"></section></main>
-<nav class="bottom"><button onclick="load()">⌂ الرئيسية</button><button onclick="cartModal()">🛒 السلة</button><button onclick="ordersModal()">📦 طلباتي</button><button onclick="authModal()">👤 الحساب</button></nav>
-<div id="mb" class="modalbg"><div class="modal"><button class="close" onclick="closeM()">×</button><div id="modal"></div></div></div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#b88727">
+<title>العوني ستور</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+ margin:0;
+ padding:0;
+ background:#f5f5f5;
+ color:#191919;
+ font-family:Tahoma,Arial,sans-serif;
+}
+
+body{padding-bottom:82px}
+
+button,input{font-family:inherit}
+
+:root{
+ --gold:#b88727;
+ --gold2:#d5a73b;
+ --dark:#181818;
+ --dark2:#242424;
+ --white:#fff;
+}
+
+.header{
+ height:106px;
+ background:#191919;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 18px;
+ position:sticky;
+ top:0;
+ z-index:50;
+ box-shadow:0 3px 15px #0004;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ font-size:23px;
+ font-weight:bold;
+ white-space:nowrap;
+}
+
+.logo{
+ width:72px;
+ height:72px;
+ border-radius:2px;
+ object-fit:cover;
+ background:linear-gradient(145deg,#111,#5b4315);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:32px;
+ font-weight:bold;
+ color:#f3d17a;
+ border:1px solid #4c3918;
+}
+
+.header-left{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.balance{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ background:#252525;
+ padding:12px 16px;
+ border-radius:10px;
+ color:#eee;
+ font-size:15px;
+}
+
+.flag{
+ font-size:23px;
+}
+
+.cart-top{
+ border:0;
+ background:#f4f4f4;
+ color:#222;
+ width:52px;
+ height:52px;
+ border-radius:7px;
+ font-size:23px;
+}
+
+.menu-btn{
+ border:0;
+ background:transparent;
+ color:#fff;
+ font-size:35px;
+ cursor:pointer;
+}
+
+.container{
+ max-width:1200px;
+ margin:auto;
+ padding:20px 15px;
+}
+
+.hero{
+ height:205px;
+ border-radius:27px;
+ overflow:hidden;
+ background:
+ radial-gradient(circle at 50% 30%,#75551b 0,#332912 20%,#171717 60%),
+ linear-gradient(120deg,#171717,#403114);
+ position:relative;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ box-shadow:0 4px 15px #0002;
+}
+
+.hero:before{
+ content:"💵     💰       💵       💰";
+ position:absolute;
+ inset:0;
+ display:flex;
+ align-items:center;
+ justify-content:space-around;
+ font-size:42px;
+ opacity:.14;
+ transform:rotate(-8deg);
+}
+
+.hero-content{
+ position:relative;
+ z-index:2;
+ color:#f5d889;
+}
+
+.hero h1{
+ margin:0 0 18px;
+ font-size:34px;
+ text-shadow:0 2px 8px #000;
+}
+
+.hero p{
+ margin:0;
+ font-size:19px;
+ color:#ffe8a3;
+}
+
+.welcome{
+ margin:25px 0 18px;
+ background:#fff;
+ border-radius:8px;
+ padding:22px;
+ text-align:center;
+ font-size:22px;
+ box-shadow:0 2px 12px #00000008;
+}
+
+.search{
+ width:100%;
+ border:0;
+ outline:0;
+ background:#e9e9e9;
+ height:70px;
+ border-radius:40px;
+ padding:0 28px;
+ font-size:20px;
+ margin-bottom:28px;
+}
+
+.search:focus{
+ box-shadow:0 0 0 3px #b8872730;
+}
+
+.section-title{
+ font-size:24px;
+ font-weight:bold;
+ margin:15px 0;
+}
+
+.categories{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+}
+
+.category{
+ border:0;
+ padding:0;
+ border-radius:16px;
+ overflow:hidden;
+ background:#1b1b1b;
+ color:#fff;
+ min-height:205px;
+ cursor:pointer;
+ box-shadow:0 4px 10px #0002;
+ transition:.2s;
+}
+
+.category:hover{
+ transform:translateY(-3px);
+}
+
+.cat-img{
+ height:135px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:58px;
+ background:
+ radial-gradient(circle at 50% 20%,#8d6b25,#302610 42%,#191919 75%);
+}
+
+.category strong{
+ display:block;
+ padding:14px 5px;
+ font-size:20px;
+ line-height:1.4;
+}
+
+.products{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px;
+ margin-top:18px;
+}
+
+.product{
+ background:#fff;
+ border-radius:15px;
+ overflow:hidden;
+ box-shadow:0 3px 12px #0001;
+}
+
+.product-img{
+ height:170px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:65px;
+ background:linear-gradient(145deg,#2a2417,#121212);
+}
+
+.product-info{
+ padding:13px;
+}
+
+.product-name{
+ font-size:17px;
+ font-weight:bold;
+ margin-bottom:8px;
+}
+
+.price{
+ color:#a87719;
+ font-size:18px;
+ font-weight:bold;
+}
+
+.add{
+ width:100%;
+ border:0;
+ background:var(--gold);
+ color:#fff;
+ border-radius:9px;
+ padding:11px;
+ margin-top:10px;
+ cursor:pointer;
+ font-size:15px;
+}
+
+.add:active{transform:scale(.98)}
+
+.empty{
+ text-align:center;
+ padding:40px 10px;
+ color:#777;
+}
+
+.whatsapp{
+ position:fixed;
+ right:22px;
+ bottom:98px;
+ width:65px;
+ height:65px;
+ border-radius:50%;
+ background:#55c76a;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:32px;
+ text-decoration:none;
+ z-index:60;
+ box-shadow:0 4px 14px #0003;
+}
+
+.bottom{
+ position:fixed;
+ bottom:0;
+ right:0;
+ left:0;
+ height:82px;
+ background:var(--gold);
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ z-index:55;
+ box-shadow:0 -3px 15px #0003;
+}
+
+.bottom button{
+ background:transparent;
+ border:0;
+ color:#fff;
+ font-size:14px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ gap:5px;
+ cursor:pointer;
+}
+
+.bottom .icon{
+ font-size:28px;
+}
+
+.bottom .active{
+ width:60px;
+ height:60px;
+ border-radius:50%;
+ background:#fff;
+ color:var(--gold);
+ justify-content:center;
+ box-shadow:0 2px 8px #0002;
+}
+
+.overlay{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#0008;
+ z-index:100;
+}
+
+.overlay.show{display:block}
+
+.drawer{
+ position:fixed;
+ top:0;
+ right:-320px;
+ width:300px;
+ height:100%;
+ background:#fff;
+ z-index:101;
+ transition:.3s;
+ padding:22px;
+ box-shadow:-5px 0 20px #0004;
+}
+
+.drawer.show{right:0}
+
+.drawer-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ border-bottom:1px solid #ddd;
+ padding-bottom:18px;
+ margin-bottom:15px;
+}
+
+.drawer h2{
+ margin:0;
+ color:var(--gold);
+}
+
+.close{
+ border:0;
+ background:#eee;
+ border-radius:50%;
+ width:40px;
+ height:40px;
+ font-size:22px;
+}
+
+.drawer button{
+ width:100%;
+ border:0;
+ background:#f3f3f3;
+ padding:15px;
+ margin:6px 0;
+ border-radius:9px;
+ text-align:right;
+ font-size:16px;
+}
+
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#0008;
+ z-index:120;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+ background:#fff;
+ width:min(500px,100%);
+ max-height:85vh;
+ overflow:auto;
+ border-radius:18px;
+ padding:20px;
+}
+
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #ddd;
+ padding-bottom:12px;
+ margin-bottom:15px;
+}
+
+.modal-head h2{margin:0}
+
+.close-modal{
+ border:0;
+ background:#eee;
+ border-radius:8px;
+ width:40px;
+ height:40px;
+ font-size:22px;
+}
+
+.cart-row{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ border-bottom:1px solid #eee;
+ padding:13px 0;
+}
+
+.qty{
+ display:flex;
+ align-items:center;
+ gap:8px;
+}
+
+.qty button{
+ width:32px;
+ height:32px;
+ border:0;
+ background:#eee;
+ border-radius:6px;
+}
+
+.total{
+ font-size:21px;
+ font-weight:bold;
+ padding:18px 0;
+}
+
+.checkout{
+ width:100%;
+ border:0;
+ background:var(--gold);
+ color:#fff;
+ padding:15px;
+ border-radius:10px;
+ font-size:17px;
+}
+
+@media(max-width:700px){
+
+ .header{
+  height:105px;
+  padding:0 10px;
+ }
+
+ .brand{
+  font-size:20px;
+ }
+
+ .logo{
+  width:62px;
+  height:62px;
+ }
+
+ .balance{
+  padding:10px;
+  font-size:12px;
+ }
+
+ .cart-top{
+  width:47px;
+  height:47px;
+ }
+
+ .container{
+  padding:15px;
+ }
+
+ .hero{
+  height:200px;
+  border-radius:24px;
+ }
+
+ .hero h1{
+  font-size:30px;
+ }
+
+ .hero p{
+  font-size:16px;
+ }
+
+ .welcome{
+  font-size:18px;
+  min-height:70px;
+ }
+
+ .search{
+  height:65px;
+  font-size:18px;
+ }
+
+ .categories{
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+ }
+
+ .category{
+  min-height:185px;
+  border-radius:14px;
+ }
+
+ .cat-img{
+  height:125px;
+  font-size:47px;
+ }
+
+ .category strong{
+  font-size:17px;
+  padding:10px 3px;
+ }
+
+ .products{
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+ }
+
+ .product-img{
+  height:140px;
+ }
+
+ .bottom{
+  height:82px;
+ }
+
+ .whatsapp{
+  bottom:96px;
+  right:20px;
+ }
+}
+
+@media(max-width:430px){
+
+ .header-left .balance{
+  display:none;
+ }
+
+ .brand{
+  font-size:18px;
+ }
+
+ .categories{
+  gap:8px;
+ }
+
+ .category{
+  min-height:175px;
+ }
+
+ .cat-img{
+  height:115px;
+ }
+
+ .category strong{
+  font-size:15px;
+ }
+
+ .product-img{
+  height:125px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+ <div class="brand">
+  <div class="logo">K</div>
+  <span>العوني ستور</span>
+ </div>
+
+ <div class="header-left">
+  <div class="balance">💎 <span id="balance">TL 0.00</span></div>
+
+  <button class="cart-top" onclick="openCart()">
+   🛒 <span id="cartCount">0</span>
+  </button>
+
+  <button class="menu-btn" onclick="openMenu()">☰</button>
+ </div>
+
+</header>
+
+<main class="container">
+
+ <section class="hero">
+  <div class="hero-content">
+   <h1>متجر العوني الرقمي</h1>
+   <p>بطاقات • ألعاب • اشتراكات • خدمات رقمية</p>
+  </div>
+ </section>
+
+ <div class="welcome">
+  مرحباً بك في متجر العوني الرقمي 👋
+ </div>
+
+ <input
+  id="search"
+  class="search"
+  type="search"
+  placeholder="ابحث عن منتج..."
+  oninput="renderProducts()"
+ >
+
+ <div class="section-title">الأقسام</div>
+
+ <section class="categories">
+
+  <button class="category" onclick="filterCategory('ألعاب')">
+   <div class="cat-img">🎮</div>
+   <strong>قسم الألعاب</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('بطاقات')">
+   <div class="cat-img">💳</div>
+   <strong>قسم البطاقات</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('تطبيقات')">
+   <div class="cat-img">📱</div>
+   <strong>قسم التطبيقات</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('بنوك')">
+   <div class="cat-img">🏦</div>
+   <strong>البنوك الرقمية</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('حوالات')">
+   <div class="cat-img">💵</div>
+   <strong>الحوالات المالية</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('برامج')">
+   <div class="cat-img">💻</div>
+   <strong>تفعيل البرامج</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('اشتراكات')">
+   <div class="cat-img">📺</div>
+   <strong>اشتراك شاشة</strong>
+  </button>
+
+  <button class="category" onclick="filterCategory('رصيد')">
+   <div class="cat-img">💰</div>
+   <strong>قسم الرصيد</strong>
+  </button>
+
+ </section>
+
+ <div class="section-title" id="productsTitle">المنتجات</div>
+
+ <section class="products" id="products"></section>
+
+</main>
+
+<a class="whatsapp" href="https://wa.me/" target="_blank">💬</a>
+
+<nav class="bottom">
+
+ <button class="active" onclick="goHome()">
+  <span class="icon">⌂</span>
+  <span>الرئيسية</span>
+ </button>
+
+ <button onclick="openCart()">
+  <span class="icon">🛒</span>
+  <span>السلة</span>
+ </button>
+
+ <button onclick="showOrders()">
+  <span class="icon">📦</span>
+  <span>طلباتي</span>
+ </button>
+
+ <button onclick="showAccount()">
+  <span class="icon">👤</span>
+  <span>الحساب</span>
+ </button>
+
+</nav>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<aside class="drawer" id="drawer">
+
+ <div class="drawer-head">
+  <h2>العوني ستور</h2>
+  <button class="close" onclick="closeMenu()">×</button>
+ </div>
+
+ <button onclick="goHome()">🏠 الرئيسية</button>
+ <button onclick="filterCategory('ألعاب')">🎮 الألعاب</button>
+ <button onclick="filterCategory('بطاقات')">💳 البطاقات</button>
+ <button onclick="filterCategory('تطبيقات')">📱 التطبيقات</button>
+ <button onclick="openCart()">🛒 السلة</button>
+ <button onclick="showOrders()">📦 طلباتي</button>
+ <button onclick="showAccount()">👤 حسابي</button>
+
+</aside>
+
+<div class="modal" id="cartModal">
+
+ <div class="modal-box">
+
+  <div class="modal-head">
+   <h2>🛒 سلة المشتريات</h2>
+   <button class="close-modal" onclick="closeCart()">×</button>
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div class="total">
+   الإجمالي: <span id="cartTotal">0.00</span> TL
+  </div>
+
+  <button class="checkout" onclick="checkout()">
+   إتمام الطلب
+  </button>
+
+ </div>
+
+</div>
+
+<div class="modal" id="infoModal">
+
+ <div class="modal-box">
+
+  <div class="modal-head">
+   <h2 id="infoTitle">العوني ستور</h2>
+   <button class="close-modal" onclick="closeInfo()">×</button>
+  </div>
+
+  <div id="infoText"></div>
+
+ </div>
+
+</div>
+
 <script>
-let products=[],active="الكل",me=null,cart=JSON.parse(localStorage.cart||"[]"),coupon=null,config={};
-const $=x=>document.getElementById(x);
-async function api(u,o={}){let r=await fetch(u,{headers:{"Content-Type":"application/json"},...o});let d=await r.json();if(!r.ok)throw Error(d.error||"حدث خطأ");return d}
-async function load(){config=await api("/api/config");products=await api("/api/products");let cs=await api("/api/categories");renderCats(["الكل",...cs]);render()}
-function renderCats(cs){$("cats").innerHTML=cs.map(c=>`<button class="cat ${c==active?"on":""}" onclick="active='${c}';renderCats(${JSON.stringify(cs)});render()">${c}</button>`).join("")}
-function render(){let q=$("q").value.toLowerCase(),a=products.filter(p=>(active=="الكل"||p.category==active)&&p.name.toLowerCase().includes(q));$("products").innerHTML=a.map(p=>`<article class=card><div class=pic>${p.image||"💎"}</div><div class=info><h3>${p.name}</h3><small>${p.description}</small><p class=price>${p.price} ${p.currency}</p><small>المخزون: ${p.stock}</small><button class="btn dark full" onclick="add(${p.id})" ${p.stock<1?"disabled":""}>أضف للسلة</button></div></article>`).join("")||"<p>لا توجد نتائج.</p>";update()}
-function update(){$("cc").textContent=cart.reduce((s,x)=>s+x.qty,0)}
-function add(id){let x=cart.find(x=>x.id==id);x?x.qty++:cart.push({id,qty:1});localStorage.cart=JSON.stringify(cart);update();toast("أضيفت للسلة")}
-function toast(t){alert(t)}
-function closeM(){$("mb").style.display="none"}
-function show(h){$("modal").innerHTML=h;$("mb").style.display="block"}
-function authModal(){if(me)return show(`<h2>مرحباً ${me.name}</h2><p>${me.email}</p>${me.role=="admin"?'<button class="btn gold full" onclick="adminPanel()">لوحة الإدارة</button>':""}<button class="btn dark full" onclick="logout()">تسجيل الخروج</button>`);show(`<h2>تسجيل الدخول</h2><input class=field id=em placeholder="البريد الإلكتروني"><input class=field id=pw type=password placeholder="كلمة المرور"><button class="btn dark full" onclick="login()">دخول</button><hr><h3>إنشاء حساب</h3><input class=field id=rn placeholder="الاسم"><input class=field id=re placeholder="البريد الإلكتروني"><input class=field id=rp type=password placeholder="كلمة المرور (8 أحرف+)"><button class="btn gold full" onclick="register()">إنشاء حساب</button>`)}
-async function login(){try{me=(await api("/api/login",{method:"POST",body:JSON.stringify({email:$("em").value,password:$("pw").value})})).user;closeM();refresh()}catch(e){alert(e.message)}}
-async function register(){try{me=(await api("/api/register",{method:"POST",body:JSON.stringify({name:$("rn").value,email:$("re").value,password:$("rp").value})})).user;closeM();refresh()}catch(e){alert(e.message)}}
-async function logout(){await api("/api/logout",{method:"POST"});me=null;closeM();refresh()}
-function refresh(){$("who").textContent=me?"👤 "+me.name:"";$("authBtn").textContent=me?"حسابي":"دخول"}
-function cartModal(){let total=0,rows="";cart=cart.filter(x=>products.some(p=>p.id==x.id));for(let x of cart){let p=products.find(p=>p.id==x.id);total+=p.price*x.qty;rows+=`<div class=row><span>${p.name}<br>${p.price} × ${x.qty}</span><span><button onclick="chg(${p.id},-1)">−</button> <button onclick="chg(${p.id},1)">+</button></span></div>`}let discount=coupon?.discount||0;show(`<h2>السلة</h2>${rows||"<p>السلة فارغة</p>"}<h3>الإجمالي: ${(total-discount).toFixed(2)} TRY</h3>${cart.length?`<input class=field id=couponCode placeholder="كود الخصم"><button class="btn dark full" onclick="applyCoupon(${total})">تطبيق الكوبون</button><br><br><button class="btn gold full" onclick="checkout()">إتمام الطلب</button>`:""}`)}
-function chg(id,d){let x=cart.find(x=>x.id==id);x.qty+=d;if(x.qty<1)cart=cart.filter(x=>x.id!=id);localStorage.cart=JSON.stringify(cart);cartModal();update()}
-async function applyCoupon(subtotal){try{coupon=await api("/api/coupons/check",{method:"POST",body:JSON.stringify({code:$("couponCode").value,subtotal})});alert("تم تطبيق الخصم");cartModal()}catch(e){alert(e.message)}}
-function checkout(){if(!me)return authModal();show(`<h2>بيانات الطلب</h2><input class=field id=on placeholder="الاسم"><input class=field id=oe placeholder="البريد الإلكتروني"><input class=field id=op placeholder="رقم الهاتف"><input class=field id=oa placeholder="العنوان (اختياري)"><button class="btn gold full" onclick="order()">إنشاء الطلب</button>`)}
-async function order(){try{let d=await api("/api/orders",{method:"POST",body:JSON.stringify({name:$("on").value,email:$("oe").value,phone:$("op").value,address:$("oa").value,items:cart,couponCode:coupon?.code})});cart=[];coupon=null;localStorage.cart="[]";update();show(`<h2>تم إنشاء الطلب ✅</h2><p>رقم الطلب: <b>${d.order.id}</b></p><p>الإجمالي: ${d.order.total} ${d.order.currency}</p>${config.payments?`<button class="btn gold full" onclick="pay('${d.order.id}')">الدفع الآن</button>`:"<div class=notice>الدفع الإلكتروني غير مفعّل حالياً.</div>"}`);load()}catch(e){alert(e.message)}}
-async function pay(id){try{let d=await api("/api/checkout",{method:"POST",body:JSON.stringify({orderId:id})});location.href=d.url}catch(e){alert(e.message)}}
-async function ordersModal(){if(!me)return authModal();let a=await api("/api/orders");show("<h2>طلباتي</h2>"+(a.map(o=>`<div class=row><span><b>${o.id}</b><br>${new Date(o.created_at).toLocaleString("ar")}</span><span>${o.total} ${o.currency}<br>${o.status} / ${o.payment_status}</span></div>`).join("")||"<p>لا توجد طلبات.</p>"))}
-async function adminPanel(){if(!me||me.role!="admin")return;let [s,p,o,c]=await Promise.all([api("/api/admin/stats"),api("/api/admin/products"),api("/api/admin/orders"),api("/api/admin/coupons")]);show(`<h2>لوحة الإدارة</h2><div class=stat><div>المستخدمون<br><b>${s.users}</b></div><div>المنتجات<br><b>${s.products}</b></div><div>الطلبات<br><b>${s.orders}</b></div><div>المبيعات المدفوعة<br><b>${s.sales} TRY</b></div></div><hr><h3>إضافة منتج</h3><input class=field id=pn placeholder="الاسم"><input class=field id=pc placeholder="التصنيف"><input class=field id=pp type=number placeholder="السعر"><input class=field id=ps type=number placeholder="المخزون"><input class=field id=pd placeholder="الوصف"><input class=field id=pi placeholder="رمز/إيموجي الصورة"><button class="btn gold full" onclick="addProduct()">إضافة المنتج</button><hr><h3>الطلبات</h3>${o.slice(0,20).map(x=>`<div class=row><span>${x.id}<br>${x.total} ${x.currency}</span><select onchange="status('${x.id}',this.value)"><option ${x.status=="pending"?"selected":""}>pending</option><option ${x.status=="paid"?"selected":""}>paid</option><option ${x.status=="processing"?"selected":""}>processing</option><option ${x.status=="completed"?"selected":""}>completed</option><option ${x.status=="cancelled"?"selected":""}>cancelled</option></select></div>`).join("")}<hr><h3>كوبون جديد</h3><input class=field id=cn placeholder="CODE"><select id=ct><option value=percent>نسبة %</option><option value=fixed>مبلغ ثابت</option></select><input class=field id=cv type=number placeholder="القيمة"><button class="btn gold full" onclick="addCoupon()">إضافة كوبون</button><h3>الكوبونات</h3>${c.map(x=>`<div class=row>${x.code} — ${x.type} ${x.value}</div>`).join("")}`)}
-async function addProduct(){try{await api("/api/admin/products",{method:"POST",body:JSON.stringify({name:$("pn").value,category:$("pc").value,price:+$("pp").value,stock:+$("ps").value,description:$("pd").value,image:$("pi").value||"💎"})});alert("تم");load();adminPanel()}catch(e){alert(e.message)}}
-async function status(id,status){try{await api("/api/admin/orders/"+id,{method:"PATCH",body:JSON.stringify({status})});adminPanel()}catch(e){alert(e.message)}}
-async function addCoupon(){try{await api("/api/admin/coupons",{method:"POST",body:JSON.stringify({code:$("cn").value,type:$("ct").value,value:+$("cv").value})});alert("تم");adminPanel()}catch(e){alert(e.message)}}
-$("q").oninput=render;
-(async()=>{try{me=(await api("/api/me")).user}catch{}refresh();load()})();
-</script></body></html>
+
+const products = [
+
+ {id:1,name:"بطاقة ألعاب رقمية",category:"ألعاب",price:25,icon:"🎮"},
+ {id:2,name:"بطاقة Google Play",category:"بطاقات",price:50,icon:"🎁"},
+ {id:3,name:"بطاقة Apple",category:"بطاقات",price:50,icon:"🍎"},
+ {id:4,name:"اشتراك Netflix",category:"اشتراكات",price:80,icon:"📺"},
+ {id:5,name:"اشتراك Shahid",category:"اشتراكات",price:65,icon:"🎬"},
+ {id:6,name:"تفعيل برنامج",category:"برامج",price:40,icon:"💻"},
+ {id:7,name:"رصيد رقمي",category:"رصيد",price:30,icon:"💰"},
+ {id:8,name:"حوالة مالية",category:"حوالات",price:100,icon:"💵"},
+ {id:9,name:"خدمة تطبيق",category:"تطبيقات",price:35,icon:"📱"},
+ {id:10,name:"خدمة بنك رقمي",category:"بنوك",price:75,icon:"🏦"},
+ {id:11,name:"بطاقة شحن",category:"بطاقات",price:20,icon:"💳"},
+ {id:12,name:"خدمة ألعاب",category:"ألعاب",price:45,icon:"🕹️"}
+
+];
+
+let activeCategory="الكل";
+
+let cart=JSON.parse(localStorage.getItem("alawni_cart")||"[]");
+
+function saveCart(){
+ localStorage.setItem("alawni_cart",JSON.stringify(cart));
+ updateCartCount();
+}
+
+function updateCartCount(){
+ let count=cart.reduce((sum,item)=>sum+item.qty,0);
+ document.getElementById("cartCount").textContent=count;
+}
+
+function filterCategory(cat){
+ activeCategory=cat;
+ document.getElementById("productsTitle").textContent="منتجات "+cat;
+ renderProducts();
+ window.scrollTo({top:500,behavior:"smooth"});
+ closeMenu();
+}
+
+function goHome(){
+ activeCategory="الكل";
+ document.getElementById("productsTitle").textContent="المنتجات";
+ document.getElementById("search").value="";
+ renderProducts();
+ window.scrollTo({top:0,behavior:"smooth"});
+ closeMenu();
+}
+
+function renderProducts(){
+
+ const q=document.getElementById("search").value.trim().toLowerCase();
+
+ const list=products.filter(p=>{
+
+  const cat=activeCategory==="الكل" || p.category===activeCategory;
+
+  const search=!q ||
+   p.name.toLowerCase().includes(q) ||
+   p.category.toLowerCase().includes(q);
+
+  return cat && search;
+
+ });
+
+ const box=document.getElementById("products");
+
+ if(!list.length){
+  box.innerHTML='<div class="empty">لا توجد منتجات مطابقة للبحث.</div>';
+  return;
+ }
+
+ box.innerHTML=list.map(p=>`
+
+  <article class="product">
+
+   <div class="product-img">
+    ${p.icon}
+   </div>
+
+   <div class="product-info">
+
+    <div class="product-name">
+     ${p.name}
+    </div>
+
+    <div class="price">
+     ${p.price.toFixed(2)} TL
+    </div>
+
+    <button class="add" onclick="addToCart(${p.id})">
+     🛒 أضف للسلة
+    </button>
+
+   </div>
+
+  </article>
+
+ `).join("");
+
+}
+
+function addToCart(id){
+
+ const item=cart.find(x=>x.id===id);
+
+ if(item){
+  item.qty++;
+ }else{
+  cart.push({id,qty:1});
+ }
+
+ saveCart();
+
+ alert("تمت إضافة المنتج إلى السلة 🛒");
+
+}
+
+function openCart(){
+
+ const box=document.getElementById("cartItems");
+
+ if(!cart.length){
+
+  box.innerHTML='<div class="empty">السلة فارغة 🛒</div>';
+
+ }else{
+
+  box.innerHTML=cart.map(item=>{
+
+   const p=products.find(x=>x.id===item.id);
+
+   return `
+
+    <div class="cart-row">
+
+     <div>
+      <b>${p.name}</b>
+      <br>
+      ${p.price} TL × ${item.qty}
+     </div>
+
+     <div class="qty">
+      <button onclick="changeQty(${p.id},1)">+</button>
+      <b>${item.qty}</b>
+      <button onclick="changeQty(${p.id},-1)">−</button>
+     </div>
+
+    </div>
+
+   `;
+
+  }).join("");
+
+ }
+
+ let total=cart.reduce((sum,item)=>{
+
+  const p=products.find(x=>x.id===item.id);
+
+  return sum+p.price*item.qty;
+
+ },0);
+
+ document.getElementById("cartTotal").textContent=total.toFixed(2);
+
+ document.getElementById("cartModal").classList.add("show");
+
+}
+
+function closeCart(){
+ document.getElementById("cartModal").classList.remove("show");
+}
+
+function changeQty(id,delta){
+
+ const item=cart.find(x=>x.id===id);
+
+ if(!item)return;
+
+ item.qty+=delta;
+
+ if(item.qty<=0){
+  cart=cart.filter(x=>x.id!==id);
+ }
+
+ saveCart();
+ openCart();
+
+}
+
+function checkout(){
+
+ if(!cart.length){
+  alert("السلة فارغة.");
+  return;
+ }
+
+ alert("تم تجهيز طلبك. يمكنك ربط هذه الخطوة لاحقًا بنظام الدفع والطلبات.");
+
+}
+
+function openMenu(){
+ document.getElementById("drawer").classList.add("show");
+ document.getElementById("overlay").classList.add("show");
+}
+
+function closeMenu(){
+ document.getElementById("drawer").classList.remove("show");
+ document.getElementById("overlay").classList.remove("show");
+}
+
+function showAccount(){
+
+ document.getElementById("infoTitle").textContent="👤 حسابي";
+
+ document.getElementById("infoText").innerHTML=`
+  <p>مرحباً بك في متجر العوني.</p>
+  <p>يمكنك لاحقاً ربط هذه الصفحة بتسجيل الدخول والحسابات.</p>
+ `;
+
+ document.getElementById("infoModal").classList.add("show");
+ closeMenu();
+
+}
+
+function showOrders(){
+
+ document.getElementById("infoTitle").textContent="📦 طلباتي";
+
+ document.getElementById("infoText").innerHTML=`
+  <p>لا توجد طلبات حالياً.</p>
+  <p>بعد ربط قاعدة البيانات ستظهر طلباتك هنا.</p>
+ `;
+
+ document.getElementById("infoModal").classList.add("show");
+ closeMenu();
+
+}
+
+function closeInfo(){
+ document.getElementById("infoModal").classList.remove("show");
+}
+
+updateCartCount();
+renderProducts();
+
+</script>
+
+</body>
+</html>
